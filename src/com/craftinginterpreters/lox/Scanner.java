@@ -83,6 +83,21 @@ class Scanner
 				// A comment goes until the end of the line.
 				while (peek() != '\n' && !isAtEnd()) advance();
 			}
+			else if (match('*'))
+			{
+				// A multi-line comment goes on until */.
+				while ((peek() != '*' || peekNext() != '/') && !isAtEnd())
+				{
+					c = advance();
+					if (c == '\n') line++;
+				}
+				if (!isAtEnd())
+				{
+					// Consume */
+					advance();
+					advance();
+				}
+			}
 			else
 			{
 				addToken(SLASH);
