@@ -85,17 +85,28 @@ class Scanner
 			}
 			else if (match('*'))
 			{
-				// A multi-line comment goes on until */.
-				while ((peek() != '*' || peekNext() != '/') && !isAtEnd())
+				// Set up a counter for multi-line comment nesting.
+				int nesting = 1;
+				while (nesting > 0)
 				{
-					c = advance();
-					if (c == '\n') line++;
-				}
-				if (!isAtEnd())
-				{
-					// Consume */
-					advance();
-					advance();
+					// A multi-line comment goes on until */.
+					while ((peek() != '*' || peekNext() != '/') && !isAtEnd()) 
+					{
+						// Count new lines if they're present.
+						if (peek() == '\n') line++;
+						
+						// Increase nesting when another comment starts.
+						if (peek() == '/' && peekNext() == '*') nesting++;
+						
+						advance();
+					}
+					if (!isAtEnd()) 
+					{
+						// Consume */ and decrease 1 multi-line comment nesting level.
+						advance();
+						advance();
+						nesting--;
+					} 
 				}
 			}
 			else
