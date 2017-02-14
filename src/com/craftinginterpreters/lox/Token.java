@@ -12,10 +12,10 @@ public class Token
 		this.type = type;
 		this.lexeme = lexeme;
 		this.literal = literal;
-		this.line;
+		this.line = line;
 	}
 	
-	public String ToString ()
+	public String toString ()
 	{
 		return type + " " + lexeme + " " + literal;
 	}
